@@ -1,15 +1,15 @@
-from config import API_KEY, API_SECRET, API_ID, API_HASH, TRADE_CALL_TELEGRAM_CHANNEL_ID
+from config import PM_API_KEY, PM_API_SECRET, TELEGRAM_API_ID, TELEGRAM_API_HASH, TRADE_CALL_TELEGRAM_CHANNEL_ID
 from telethon import TelegramClient, events
 from pyPMClient.pmClient import PMClient
 from scrips import ScripMaster
 from order import Order
 
-client = TelegramClient('historical', API_ID, API_HASH)
+client = TelegramClient('historical', TELEGRAM_API_ID, TELEGRAM_API_HASH)
 client.start()
 
 BANK_NIFTY = "BANKNIFTY"
 
-pm = PMClient(api_key=API_KEY, api_secret=API_SECRET)
+pm = PMClient(api_key=PM_API_KEY, api_secret=PM_API_SECRET)
 pm.login("alpha")
 pm.generate_session("your_request_token_here")
 
