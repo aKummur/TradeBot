@@ -37,6 +37,32 @@ class Order():
         except Exception as e:
             print("Error : {}".format(e))
 
+    def placeBuyLimitOrder(self, scrip, buyAbovePrice):
+        lotSize = self.lotSizes[scrip.name]
+        funds = self.getFunds()
+        print("funds {} {}".format(funds, type(funds)))
+        # quantity = int(funds/(buyAbovePrice*lotSize)) * lotSize
+        quantity = 100
+        print("quantity {}".format(quantity))
+        try:
+            res = self.pm.place_order(
+                txn_type="B",
+                exchange="NSE",
+                segment="D",
+                product="M",
+                security_id=scrip.id,
+                quantity=quantity,
+                validity="DAY",
+                order_type="SLM",
+                trigger_price=buyAbovePrice,
+                price=0,
+                source="N",
+                off_mkt_flag=False,
+            )
+            print("Response : {}".format(res))
+        except Exception as e:
+            print("Error : {}".format(e))
+
     def placeBuyOrderWithSl(self, scrip, buyPrice, sl):
         lotSize = self.lotSizes[scrip.name]
         funds = self.getFunds()
@@ -62,12 +88,31 @@ class Order():
         except Exception as e:
             print("Error : {}".format(e))
 
+    def placeSellLimitOrder(self, scrip_id, quantity, sellPrice):
+        try:
+            res = self.pm.place_order(
+                txn_type="S",
+                exchange="NSE",
+                segment="D",
+                product="M",
+                security_id=scrip_id,
+                quantity=quantity,
+                validity="DAY",
+                order_type="LMT",
+                price=sellPrice,
+                source="N",
+                off_mkt_flag=False,
+            )
+            print("Response : {}".format(res))
+        except Exception as e:
+            print("Error : {}".format(e))
+
 if __name__ == "__main__":
     from .pyPMClient.pmClient import PMClient
     from scrips import ScripMaster
     from config import *
 
-    pm = PMClient(api_key=API_KEY, api_secret=API_SECRET, access_token=ACCESS_TOKEN)
+    pm = PMClient(api_key=PM_API_KEY, api_secret=PM_API_SECRET, access_token=PM_ACCESS_TOKEN)
     # pm = PMClient(api_key=API_KEY, api_secret=API_SECRET)
     # pm.login("alpha")
     # pm.generate_session("request_token")
